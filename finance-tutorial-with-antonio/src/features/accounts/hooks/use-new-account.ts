@@ -6,6 +6,9 @@ type NewAccountState = {
   onClose: () => void;
 };
 
+/**
+ * Manage the open state of the new account modal.
+ */
 export const useNewAccount = create<NewAccountState>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
