@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import accounts from "@/app/api/[[...route]]/accounts";
 
 export const runtime = "edge";
