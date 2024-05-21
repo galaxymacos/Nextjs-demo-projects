@@ -7,7 +7,7 @@ type NewAccountState = {
 };
 
 /**
- * Manage the open state of the new account modal.
+ * Manage the open state of the modal to create new account.
  */
 export const useNewAccount = create<NewAccountState>((set) => ({
   isOpen: false,

@@ -5,7 +5,7 @@ import { client } from "@/lib/hono";
 
 export const useGetAccounts = () => {
   const query = useQuery({
-    queryKey: ["accounts"],
+    queryKey: ["accounts"], // unique key to be revalidated by queryclient
     queryFn: async () => {
       const response = await client.api.accounts.$get();
       if (!response.ok) {
