@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { client } from "@/lib/hono";
+import { Actions } from "@/app/(dashboard)/accounts/actions";
 
 export type ResponseType = InferResponseType<
   typeof client.api.accounts.$get,
@@ -13,6 +14,7 @@ export type ResponseType = InferResponseType<
 >["data"][0];
 
 export const columns: ColumnDef<ResponseType>[] = [
+  // * column: the checkbox for bulk operation
   {
     id: "select",
     header: ({ table }) => (
@@ -35,6 +37,7 @@ export const columns: ColumnDef<ResponseType>[] = [
     enableSorting: false,
     enableHiding: false,
   },
+  // * column: showing the name of the account
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -48,5 +51,10 @@ export const columns: ColumnDef<ResponseType>[] = [
         </Button>
       );
     },
+  },
+  // * column:
+  {
+    id: "actions",
+    cell: ({ row }) => <Actions id={row.original.id} />,
   },
 ];
