@@ -6,8 +6,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 
 export const useConfirm = (title: string, message: string): [() => JSX.Element, () => Promise<unknown>] => {
     const [promise, setPromise] = useState<{resolve: (value: boolean) => void } | null>(null)
+    // confirm() -> promise != null -> show dialog -> user clicks confirm -> promise.resolve(true) -> promise = null -> dialog closes
     const confirm = () => new Promise((resolve, reject) => {
-        setPromise({ resolve })
+        setPromise({ resolve: resolve }) // resolve is a function that can be called 
     })
 
     const handleClose = () => {
@@ -25,6 +26,7 @@ export const useConfirm = (title: string, message: string): [() => JSX.Element, 
     }
 
     const ConfirmationDialog = () => (
+        // show the dialog if promise is not null
         <Dialog open={promise !== null}>
             <DialogContent>
                 <DialogHeader>
