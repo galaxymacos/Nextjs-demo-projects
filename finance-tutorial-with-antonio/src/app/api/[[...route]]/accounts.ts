@@ -25,30 +25,36 @@ const app = new Hono()
   })
   .get(
     "/:id",
-    zValidator("param", z.object({  //  validate the route as /accounts/18
-      id: z.string().optional()
-    })),
+    zValidator(
+      "param",
+      z.object({
+        //  validate the route as /accounts/18
+        id: z.string().optional(),
+      }),
+    ),
     clerkMiddleware(),
     async (c) => {
-      const auth = getAuth(c)
-      const { id } = c.req.valid("param")
+      const auth = getAuth(c);
+      const { id } = c.req.valid("param");
       if (!id) {
-        return c.json({ error: "Missing id" }, 400)
+        return c.json({ error: "Missing id" }, 400);
       }
       if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401)
+        return c.json({ error: "Unauthorized" }, 401);
       }
-      const [data] = await db.select({  // filter by account id will return only one account, so get the first data
-        id: accounts.id,  // get the id field from accounts schema and name it id
-        name: accounts.name // get the name field from accounts schema and name it name
-      })
-      .from(accounts) // accounts schema
-      .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
+      const [data] = await db
+        .select({
+          // filter by account id will return only one account, so get the first data
+          id: accounts.id, // get the id field from accounts schema and name it id
+          name: accounts.name, // get the name field from accounts schema and name it name
+        })
+        .from(accounts) // accounts schema
+        .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)));
       if (!data) {
-        return c.json({error: "Not found"}, 404)
+        return c.json({ error: "Not found" }, 404);
       }
-      return c.json({data})
-    }
+      return c.json({ data });
+    },
   )
   // * post request to insert an account providing { name: "xxx" } in json
   .post(
@@ -99,6 +105,46 @@ const app = new Hono()
         .returning({
           id: accounts.id,
         });
+      return c.json({ data });
+    },
+  )
+  .patch(
+    "/:id",
+    clerkMiddleware(),
+    zValidator(
+      "param",
+      z.object({
+        id: z.string().optional(),
+      }),
+    ),
+    zValidator(
+      "json",
+      insertAccountSchema.pick({
+        name: true,
+      }),
+    ),
+    async (c) => {
+      const auth = getAuth(c);
+      const { id } = c.req.valid("param");
+      const values = c.req.valid("json");
+
+      if (!id) {
+        return c.json({ error: "Missing id" }, 400);
+      }
+
+      if (!auth?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const [data] = await db
+        .update(accounts)
+        .set(values)
+        .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
+        .returning();
+
+      if (!data) {
+        return c.json({ error: "Not found" }, 404);
+      }
       return c.json({ data });
     },
   );
