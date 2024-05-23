@@ -14,7 +14,7 @@ export type ResponseType = InferResponseType<
 >["data"][0];
 
 export const columns: ColumnDef<ResponseType>[] = [
-  // * column: the checkbox for bulk operation
+  // * column: the checkbox for bulk operations
   {
     id: "select",
     header: ({ table }) => (
@@ -37,7 +37,7 @@ export const columns: ColumnDef<ResponseType>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  // * column: showing the name of the account
+  // * account name column
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -52,7 +52,7 @@ export const columns: ColumnDef<ResponseType>[] = [
       );
     },
   },
-  // * column:
+  // * actions dropdown column
   {
     id: "actions",
     cell: ({ row }) => <Actions id={row.original.id} />,

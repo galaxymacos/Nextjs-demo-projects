@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
+import { useConfirm } from "@/hooks/use-confirm";
 
 const formSchema = insertAccountSchema.pick({
   name: true,
@@ -40,6 +41,11 @@ export const AccountForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues,
   });
+
+  const [ConfirmDialog, confirm] = useConfirm(
+    "Are you sure?",
+    "You are about to delete this transaction.",
+  );
 
   const handleSubmit = (values: FormValues) => {
     onSubmit(values);
