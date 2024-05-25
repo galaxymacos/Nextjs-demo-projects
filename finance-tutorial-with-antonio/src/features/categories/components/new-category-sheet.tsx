@@ -22,7 +22,7 @@ type FormValues = z.input<typeof formSchema>;
  * The sheet to create a new category
  * @returns
  */
-const NewCategorySheet = () => {
+export const NewCategorySheet = () => {
   const { isOpen, onClose } = useNewCategory();
 
   const mutation = useCreateCategory();
@@ -49,5 +49,3 @@ const NewCategorySheet = () => {
     </Sheet>
   );
 };
-
-export default NewCategorySheet;

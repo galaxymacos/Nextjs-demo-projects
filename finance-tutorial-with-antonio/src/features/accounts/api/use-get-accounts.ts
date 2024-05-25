@@ -3,8 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import { client } from "@/lib/hono";
 
+/**
+ *
+ * @returns A query object to fetch accounts
+ */
 export const useGetAccounts = () => {
   const query = useQuery({
+    // * a query that handles caching, which endpoint to fetch
     queryKey: ["accounts"], // unique key to be revalidated by queryclient
     queryFn: async () => {
       const response = await client.api.accounts.$get();

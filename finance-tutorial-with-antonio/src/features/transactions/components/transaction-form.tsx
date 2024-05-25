@@ -1,5 +1,5 @@
 "use client";
-import { insertCategorySchema } from "@/db/schema";
+import { insertCategorySchema, insertTransactionSchema } from "@/db/schema";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,28 +15,44 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useConfirm } from "@/hooks/use-confirm";
+import { Select } from "@/components/select";
 
-const formSchema = insertCategorySchema.pick({
-  // other fields can be generated
-  name: true,
+const formSchema = z.object({
+  date: z.coerce.date(),
+  accountId: z.string(),
+  categoryId: z.string().nullable().optional(),
+  payee: z.string(),
+  amount: z.string(),
+  notes: z.string().nullable().optional(),
 });
 
+const apiSchema = insertTransactionSchema.omit({ id: true });
+
 type FormValues = z.input<typeof formSchema>;
+type ApiFormValues = z.input<typeof apiSchema>;
 
 type Props = {
   id?: string;
   defaultValues?: FormValues;
-  onSubmit: (values: FormValues) => void;
+  onSubmit: (values: ApiFormValues) => void;
   onDelete?: () => void;
   disabled: boolean;
+  accountOptions: { label: string; value: string }[];
+  categoryOptions: { label: string; value: string }[];
+  onCreateAccount: (name: string) => void;
+  onCreateCategory: (name: string) => void;
 };
 
-export const CategoryForm = ({
+export const TransactionForm = ({
   id,
   defaultValues,
   onSubmit,
   onDelete,
   disabled,
+  accountOptions,
+  categoryOptions,
+  onCreateAccount,
+  onCreateCategory,
 }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,7 +65,7 @@ export const CategoryForm = ({
   );
 
   const handleSubmit = (values: FormValues) => {
-    onSubmit(values);
+    console.log({ values });
   };
 
   const handleDelete = () => {
@@ -66,16 +82,41 @@ export const CategoryForm = ({
       >
         <FormField
           control={form.control}
-          name={"name"}
+          name={"accountId"}
           render={({ field }) => {
             return (
               <FormItem className="w-full">
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Account</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
+                  <Select
+                    placeholder="Select an account"
+                    options={accountOptions}
+                    onCreate={onCreateAccount}
+                    value={field.value}
+                    onChange={field.onChange}
                     disabled={disabled}
-                    placeholder={"e.g. Food, Travel, etc..."}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+        <FormField
+          control={form.control}
+          name={"categoryId"}
+          render={({ field }) => {
+            return (
+              <FormItem className="w-full">
+                <FormLabel>Account</FormLabel>
+                <FormControl>
+                  <Select
+                    placeholder="Select an category"
+                    options={categoryOptions}
+                    onCreate={onCreateCategory}
+                    value={field.value}
+                    onChange={field.onChange}
+                    disabled={disabled}
                   />
                 </FormControl>
                 <FormMessage />

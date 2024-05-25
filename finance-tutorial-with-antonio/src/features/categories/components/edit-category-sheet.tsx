@@ -24,7 +24,7 @@ const formSchema = insertCategorySchema.pick({
 
 type FormValues = z.input<typeof formSchema>;
 
-const EditCategorySheet = () => {
+export const EditCategorySheet = () => {
   const { isOpen, onClose, id } = useOpenCategory();
 
   const [ConfirmDialog, confirm] = useConfirm(
@@ -94,5 +94,3 @@ const EditCategorySheet = () => {
     </>
   );
 };
-
-export default EditCategorySheet;

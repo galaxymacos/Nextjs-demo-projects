@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/hono";
 
 /**
- * TODO: write comment
- * @returns
+ * This hook is used in client side to return a query to get all categories
+ * @returns A query to get all categories
  */
 export const useGetCategories = () => {
   const query = useQuery({

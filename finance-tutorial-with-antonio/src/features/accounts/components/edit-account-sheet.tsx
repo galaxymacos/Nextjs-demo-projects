@@ -23,7 +23,7 @@ const formSchema = insertAccountSchema.pick({
 
 type FormValues = z.input<typeof formSchema>;
 
-const EditAccountSheet = () => {
+export const EditAccountSheet = () => {
   const { isOpen, onClose, id } = useOpenAccount();
 
   const [ConfirmDialog, confirm] = useConfirm(
@@ -94,5 +94,3 @@ const EditAccountSheet = () => {
     </>
   );
 };
-
-export default EditAccountSheet;

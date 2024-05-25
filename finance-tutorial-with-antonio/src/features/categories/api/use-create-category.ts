@@ -7,6 +7,10 @@ import { toast } from "sonner";
 type ResponseType = InferResponseType<typeof client.api.categories.$post>;
 type RequestType = InferRequestType<typeof client.api.categories.$post>["json"]; // We are passing a json body
 
+/**
+ * This hook is used to return a new mutation which will create a new category when called mutate
+ * @returns A mutation to create a new category
+ */
 export const useCreateCategory = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error, RequestType>({
