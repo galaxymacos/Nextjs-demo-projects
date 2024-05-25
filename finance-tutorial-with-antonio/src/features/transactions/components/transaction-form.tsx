@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useConfirm } from "@/hooks/use-confirm";
 import { Select } from "@/components/select";
+import { DatePicker } from "@/components/date-picker";
 
 const formSchema = z.object({
   date: z.coerce.date(),
@@ -80,6 +81,25 @@ export const TransactionForm = ({
         }
         onSubmit={form.handleSubmit(handleSubmit)}
       >
+        {/* date */}
+        <FormField
+          control={form.control}
+          name={"date"}
+          render={({ field }) => {
+            return (
+              <FormItem className="w-full">
+                <FormControl>
+                  <DatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    disabled={disabled}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
         <FormField
           control={form.control}
           name={"accountId"}
