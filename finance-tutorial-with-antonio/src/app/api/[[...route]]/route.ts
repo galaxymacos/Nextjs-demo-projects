@@ -2,8 +2,6 @@ import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import accounts from "@/app/api/[[...route]]/accounts";
 import categories from "@/app/api/[[...route]]/categories";
-import transactions from "@/app/api/[[...route]]/transactions";
-
 
 export const runtime = "edge";
 
@@ -12,8 +10,7 @@ const app = new Hono().basePath("/api");
 // redirecting
 const routes = app
   .route("/accounts", accounts)
-  .route("/categories", categories)
-  .route("/transactions", transactions);
+  .route("/categories", categories);
 
 export const GET = handle(app);
 export const POST = handle(app);
