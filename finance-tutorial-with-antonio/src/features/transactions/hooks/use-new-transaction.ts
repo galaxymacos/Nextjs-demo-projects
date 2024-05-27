@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type NewAccountState = {
+type NewTransactionState = {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
@@ -9,7 +9,7 @@ type NewAccountState = {
 /**
  * Manage the open state of the modal to create new account.
  */
-export const useNewAccount = create<NewAccountState>((set) => ({
+export const useNewTransaction = create<NewTransactionState>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
