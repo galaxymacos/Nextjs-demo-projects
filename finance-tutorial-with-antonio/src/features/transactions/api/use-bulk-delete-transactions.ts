@@ -5,30 +5,28 @@ import { client } from "@/lib/hono";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.transactions)[":id"]["$patch"]
+  (typeof client.api.transactions)["bulk-delete"]["$post"]
 >;
 type RequestType = InferRequestType<
-  (typeof client.api.transactions)[":id"]["$patch"]
+  (typeof client.api.transactions)["bulk-delete"]["$post"]
 >["json"];
 
-export const useEditTransaction = (id?: string) => {
+export const useBulkDeleteTransactions = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
-      const response = await client.api.transactions[":id"]["$patch"]({
-        // call patch endpoint at /accounts/:id
-        json, // patch endpoint requires a json body
-        param: { id }, // patch endpoint requires a param id
-      });
+      const response = await client.api.transactions["bulk-delete"]["$post"]({
+        json,
+      }); // send post request to api/transactinos/bulk-delete end point
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("Transaction Updated");
-      queryClient.invalidateQueries({ queryKey: ["transaction", { id }] });
+      toast.success("Transaction deleted");
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      // TODO: Invalidate summary
     },
     onError: () => {
-      toast.error("failed to edit transaction");
+      toast.error("failed to delete transactions");
     },
   });
 

@@ -5,29 +5,29 @@ import { client } from "@/lib/hono";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
-  (typeof client.api.accounts)[":id"]["$delete"]
+  (typeof client.api.transactions)[":id"]["$delete"]
 >;
 
 /**
- * Return a mutation object, when calling mutation.mutate(), will delete the account
+ * Return a mutation object, when calling mutation.mutate(), will delete the transaction
  */
-export const useDeleteAccount = (id?: string) => {
+export const useDeleteTransaction = (id?: string) => {
   const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error>({
     mutationFn: async () => {
-      const response = await client.api.accounts[":id"]["$delete"]({
+      const response = await client.api.transactions[":id"]["$delete"]({
         param: { id }, // patch endpoint requires a param id
       });
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("Account Deleted");
-      queryClient.invalidateQueries({ queryKey: ["account", { id }] });
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-      // TODO: Invalidate summary and transactions
+      toast.success("Transaction Deleted");
+      queryClient.invalidateQueries({ queryKey: ["transaction", { id }] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      // TODO: Invalidate summary
     },
     onError: () => {
-      toast.error("failed to delete account");
+      toast.error("failed to delete transaction");
     },
   });
 
