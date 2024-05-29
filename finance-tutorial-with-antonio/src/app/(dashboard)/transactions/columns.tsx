@@ -7,9 +7,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { client } from "@/lib/hono";
 import { Actions } from "@/app/(dashboard)/accounts/actions";
+import { format } from "date-fns";
+import { formatCurrency } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 export type ResponseType = InferResponseType<
-  typeof client.api.accounts.$get,
+  typeof client.api.transactions.$get,
   200 // noly get the success type
 >["data"][0];
 
@@ -37,18 +40,80 @@ export const columns: ColumnDef<ResponseType>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  // * account name column
   {
-    accessorKey: "name",
+    accessorKey: "date",
     header: ({ column }) => {
       return (
         <Button
           variant={"ghost"}
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Date
           <ArrowUpDown className="ml-4 size-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const date = row.getValue("date") as Date;
+      return <span>{format(date, "dd MMMM, yyyy")}</span>;
+    },
+  },
+  {
+    accessorKey: "category",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Category
+          <ArrowUpDown className="ml-4 size-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <span>{row.original.category}</span>;
+    },
+  },
+  {
+    accessorKey: "payee",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          payee
+          <ArrowUpDown className="ml-4 size-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <span>{row.original.payee}</span>;
+    },
+  },
+  {
+    accessorKey: "amount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          amount
+          <ArrowUpDown className="ml-4 size-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("amount"));
+      return (
+        <Badge
+          variant={amount < 0 ? "destructive" : "default"}
+          className="px-3.5 py-2.5 text-xs font-medium"
+        >
+          {formatCurrency(amount)}
+        </Badge>
       );
     },
   },
