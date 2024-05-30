@@ -11,7 +11,13 @@ type RequestType = InferRequestType<
   (typeof client.api.accounts)[":id"]["$patch"]
 >["json"];
 
+/**
+ * A hook to edit an account provided an account id
+ * @param id
+ * @returns
+ */
 export const useEditAccount = (id?: string) => {
+  // for revalidating if there is outdated data after mutation
   const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
@@ -26,6 +32,8 @@ export const useEditAccount = (id?: string) => {
       toast.success("Account Updated");
       queryClient.invalidateQueries({ queryKey: ["account", { id }] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      // TODO: Invalidate summary
     },
     onError: () => {
       toast.error("failed to create account");

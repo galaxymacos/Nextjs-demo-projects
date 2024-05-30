@@ -68,7 +68,7 @@ export const TransactionForm = ({
 
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
-    "You are about to delete this account.",
+    "You are about to delete this transaction.",
   );
 
   const handleSubmit = (values: FormValues) => {

@@ -15,7 +15,7 @@ export function convertAmountToMiliunits(amount: number) {
 }
 
 /**
- * The amount to show to the user
+ * Convert the integer amount in database (10000) to show to the user ($10.00)
  */
 export function convertMiliunitsToAmount(miliunits: number) {
   return miliunits / 1000;

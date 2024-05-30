@@ -43,9 +43,11 @@ export const transactions = pgTable("transactions", {
   payee: text("payee").notNull(),
   notes: text("notes"),
   date: timestamp("date", { mode: "date" }).notNull(), // a javascript Date object
-  accountId: text("account_id").references(() => accounts.id, {
-    onDelete: "cascade",
-  }),
+  accountId: text("account_id")
+    .references(() => accounts.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
   categoryId: text("category_id").references(() => categories.id, {
     // When category is deleted, this field should be set to null
     onDelete: "set null",

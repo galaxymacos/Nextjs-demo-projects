@@ -1,17 +1,17 @@
 import { create } from "zustand";
 
-type OpenAccountState = {
-    id?: string;
+type OpenTransactionState = {
+  id?: string;
   isOpen: boolean;
   onOpen: (id: string) => void;
   onClose: () => void;
 };
 
 /**
- * Manage the open state of the modal to modify an existing account.
+ * Open and close the modal that modifies an existing transaction.
  */
-export const useOpenAccount = create<OpenAccountState>((set) => ({
-    id: undefined,
+export const useOpenTransaction = create<OpenTransactionState>((set) => ({
+  id: undefined,
   isOpen: false,
   onOpen: (id: string) => set({ isOpen: true, id: id }),
   onClose: () => set({ isOpen: false, id: undefined }),

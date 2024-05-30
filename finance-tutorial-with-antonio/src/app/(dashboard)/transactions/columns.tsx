@@ -10,6 +10,8 @@ import { Actions } from "@/app/(dashboard)/accounts/actions";
 import { format } from "date-fns";
 import { formatCurrency } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { AccountColumn } from "@/app/(dashboard)/transactions/account-column";
+import { CategoryColumn } from "@/app/(dashboard)/transactions/category-column";
 
 export type ResponseType = InferResponseType<
   typeof client.api.transactions.$get,
@@ -72,7 +74,13 @@ export const columns: ColumnDef<ResponseType>[] = [
       );
     },
     cell: ({ row }) => {
-      return <span>{row.original.category}</span>;
+      return (
+        <CategoryColumn
+          id={row.original.id}
+          category={row.original.category}
+          categoryId={row.original.categoryId}
+        />
+      );
     },
   },
   {
@@ -109,11 +117,33 @@ export const columns: ColumnDef<ResponseType>[] = [
       const amount = parseFloat(row.getValue("amount"));
       return (
         <Badge
-          variant={amount < 0 ? "destructive" : "default"}
+          variant={amount < 0 ? "destructive" : "primary"}
           className="px-3.5 py-2.5 text-xs font-medium"
         >
           {formatCurrency(amount)}
         </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "account",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Account
+          <ArrowUpDown className="ml-4 size-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <AccountColumn
+          account={row.original.account}
+          accountId={row.original.accountId}
+        />
       );
     },
   },
