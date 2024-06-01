@@ -76,23 +76,24 @@ export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {
         .filter((row) => row.length > 0),
     };
 
-    console.log({ mappedData });
     const arrayOfData = mappedData.body.map((row) => {
       return row.reduce((acc: any, cell, index) => {
         const header = mappedData.headers[index];
         if (header !== null) {
           acc[header] = cell;
         }
+        return acc;
       }, {});
     });
-
-    console.log({ arrayOfData });
 
     const formattedData = arrayOfData.map((item) => ({
       ...item,
       amount: convertAmountToMiliunits(parseFloat(item.amount)),
       date: format(parse(item.date, dateFormat, new Date()), outputFormat),
     }));
+
+    console.log(formattedData);
+    onSubmit(formattedData);
   };
 
   return (
@@ -115,7 +116,7 @@ export const ImportCard = ({ data, onCancel, onSubmit }: Props) => {
                 size={"sm"}
                 disabled={progress < requiredOptions.length}
                 className="w-full lg:w-auto"
-                onClick={() => {}}
+                onClick={handleContinue}
               >
                 Continue ({progress} / {requiredOptions.length})
               </Button>
