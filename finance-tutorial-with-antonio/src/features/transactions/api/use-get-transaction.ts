@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/hono";
+import { convertAmountFromMiliunits } from "@/lib/utils";
 
-// hooks to get transaction by id
+// hooks to get the data related to a transaction by id
 export const useGetTransaction = (id?: string) => {
   const query = useQuery({
     enabled: !!id,
@@ -14,7 +15,10 @@ export const useGetTransaction = (id?: string) => {
         throw new Error("Failed to fetch transaction");
       }
       const { data } = await response.json();
-      return data;
+      return {
+        ...data,
+        amount: convertAmountFromMiliunits(data.amount),
+      };
     },
   });
   return query;
