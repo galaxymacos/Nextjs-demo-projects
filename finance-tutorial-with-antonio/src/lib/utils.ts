@@ -22,6 +22,11 @@ export function convertAmountFromMiliunits(miliunits: number) {
   return miliunits / 1000;
 }
 
+/**
+ * Change a number to currency format in string
+ * @param value
+ * @returns
+ */
 export function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -82,4 +87,20 @@ export function formatDateRange(period?: Period) {
   }
 
   return format(period.from, "LLL dd, y");
+}
+
+export function formatPercentage(
+  value: number,
+  options: { addPrefix?: boolean } = {
+    addPrefix: false,
+  },
+) {
+  const result = new Intl.NumberFormat("en-US", {
+    style: "percent",
+  }).format(value / 100);
+
+  if (options.addPrefix && value > 0) {
+    return `+${result}`;
+  }
+  return result;
 }

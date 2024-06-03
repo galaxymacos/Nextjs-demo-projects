@@ -1,13 +1,16 @@
 import React from "react";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency, formatPercentage } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 import { IconType } from "react-icons";
+import { CountUp } from "@/components/count-up";
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const boxVariant = cva("shrink-0 rounded-md p-3", {
   variants: {
@@ -69,6 +72,45 @@ export const DataCard = ({
           <Icon className={cn(iconVariant({ variant }))} />
         </div>
       </CardHeader>
+      <CardContent>
+        <h1 className="font-bold">
+          <CountUp
+            preserveValue
+            start={0}
+            end={value}
+            decimals={2}
+            decimalPlaces={2}
+            formattingFn={formatCurrency}
+          />
+        </h1>
+        <p
+          className={cn(
+            "line-clamp-1 text-sm text-muted-foreground",
+            percentageChange > 0 && "text-emerald-500",
+            percentageChange < 0 && "text-rose-500",
+          )}
+        >
+          {formatPercentage(percentageChange, { addPrefix: true })} from last
+          period
+        </p>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const DataCardLoading = () => {
+  return (
+    <Card className="h-[192px] border-none drop-shadow-sm">
+      <CardHeader className="flex flex-row items-center justify-between gap-x-4">
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-24" />
+          <Skeleton className="h-4 w-40" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Skeleton className="mb-2 h-10 w-24 shrink-0" />
+        <Skeleton className="h-4 w-40 shrink-0" />
+      </CardContent>
     </Card>
   );
 };
