@@ -11,7 +11,7 @@ const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql);
 
 const SEED_USER_ID = "user_2gckl4XJVm0pbn8uZLPIzTJvYcU";
-const SEED_CATEGORIES = [
+const SEED_CATEGORIES: (typeof categories.$inferSelect)[] = [
   {
     id: "category_1",
     name: "Food",
@@ -103,6 +103,10 @@ const generateRandomAmount = (category: typeof categories.$inferInsert) => {
   }
 };
 
+/**
+ * Generate a transaction for a given day and append it to SEED_TRANSACTIONS
+ * @param day
+ */
 const generateTransactionsForDay = (day: Date) => {
   const numTransactions = Math.floor(Math.random() * 4) + 1; // 1-4 transactions
   for (let i = 0; i < numTransactions; i++) {
