@@ -1,3 +1,4 @@
+import { CustomTooltip } from "@/components/custom-tooltip";
 import { format } from "date-fns";
 import React from "react";
 import {
@@ -17,6 +18,9 @@ type Props = {
   }[];
 };
 
+/**
+ * A chart component that displays an area chart with two areas, income and expenses, stacked on top of each other.
+ */
 export const AreaVariant = ({ data }: Props) => {
   return (
     <ResponsiveContainer width={"100%"} height={350}>
@@ -49,6 +53,7 @@ export const AreaVariant = ({ data }: Props) => {
           fill="url(#income)"
           className="drop-shadow-sm"
         />
+        <Tooltip content={<CustomTooltip />} />
         <Area
           type="monotone"
           dataKey={"expenses"}

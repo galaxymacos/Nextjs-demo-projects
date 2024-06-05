@@ -1,4 +1,6 @@
 import { AreaVariant } from "@/components/area-variant";
+import { BarVariant } from "@/components/bar-variant";
+import { LineVariant } from "@/components/line-variant";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileSearch } from "lucide-react";
 import React from "react";
@@ -30,7 +32,8 @@ export const Chart = ({ data = [] }: Props) => {
             <p>No data for this period</p>
           </div>
         ) : (
-          <AreaVariant data={data} /> // Data is passed in DataChart component
+          // <AreaVariant data={data} /> // Data is passed in DataChart component
+          <LineVariant data={data} /> // Data is passed in DataChart component
         )}
       </CardContent>
     </Card>
