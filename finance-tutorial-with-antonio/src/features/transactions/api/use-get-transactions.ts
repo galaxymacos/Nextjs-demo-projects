@@ -14,8 +14,7 @@ export const useGetTransactions = () => {
   const accountId = params.get("accountId") || "";
 
   const query = useQuery({
-    // * a query that handles caching, which endpoint to fetch
-    queryKey: ["transactions", { from, to, accountId }], // TODO: check if params are needed
+    queryKey: ["transactions", { from, to, accountId }],
     queryFn: async () => {
       const response = await client.api.transactions.$get({
         // call hono api endpoints with query
